@@ -1,0 +1,89 @@
+{
+  "task": "swinir_bitmri_t1_l2_lr10",
+  "model": "ktmr",
+  "mask_path": "masks/240/10.mat",
+  "gpu_ids": [
+    0
+  ],
+  "dist": true,
+  "scale": 1,
+  "n_channels": 1,
+  "path": {
+    "root": "superresolution/bitmri/t1",
+    "pretrained_netG": null,
+    "pretrained_netE": null
+  },
+  "datasets": {
+    "train": {
+      "name": "train_dataset",
+      "dataset_type": "sr",
+      "dataroot_H": "./datasets/BITMRI/t1/hr/train",
+      "dataroot_L": "./datasets/BITMRI/t1/lr_10/train",
+      "H_size": 48,
+      "dataloader_shuffle": true,
+      "dataloader_num_workers": 16,
+      "dataloader_batch_size": 1
+    },
+    "test": {
+      "name": "test_dataset",
+      "dataset_type": "sr",
+      "dataroot_H": "./datasets/BITMRI/t1/hr/train",
+      "dataroot_L": "./datasets/BITMRI/t1/lr_10/train"
+    }
+  },
+  "netG": {
+    "net_type": "swinir",
+    "upscale": 1,
+    "in_chans": 1,
+    "img_size": 240,
+    "window_size": 8,
+    "img_range": 1.0,
+    "depths": [
+      6,
+      6,
+      6,
+      6,
+      6,
+      6
+    ],
+    "embed_dim": 180,
+    "num_heads": [
+      6,
+      6,
+      6,
+      6,
+      6,
+      6
+    ],
+    "mlp_ratio": 2,
+    "upsampler": "pixelshuffle",
+    "resi_connection": "1conv",
+    "init_type": "default"
+  },
+  "train": {
+    "G_lossfn_type": "l2",
+    "G_lossfn_weight": 1.0,
+    "E_decay": 0.999,
+    "G_optimizer_type": "adam",
+    "G_optimizer_lr": 2e-4,
+    "G_optimizer_wd": 0,
+    "G_optimizer_clipgrad": null,
+    "G_optimizer_reuse": true,
+    "G_scheduler_type": "MultiStepLR",
+    "G_scheduler_milestones": [
+      25000,
+      40000,
+      45000,
+      47500,
+      50000
+    ],
+    "G_scheduler_gamma": 0.5,
+    "G_regularizer_orthstep": null,
+    "G_regularizer_clipstep": null,
+    "G_param_strict": true,
+    "E_param_strict": true,
+    "checkpoint_test": 5000,
+    "checkpoint_save": 5000,
+    "checkpoint_print": 200
+  }
+}
